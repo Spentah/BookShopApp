@@ -32,6 +32,7 @@ public class AuthorService {
         for (Character character : firstLetters) {
             List<Author> authorsByLetters = authors.stream()
                     .filter(c -> c.getAuthorName().startsWith(character.toString())).collect(Collectors.toList());
+
             sortedAuthors.put(character, authorsByLetters);
         }
         return sortedAuthors;
