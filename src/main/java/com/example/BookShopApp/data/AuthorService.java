@@ -18,23 +18,34 @@ public class AuthorService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Map<Character, List<Author>> getAuthors() {
+//    public Map<Character, List<Author>> getAuthors() {
+//        List<Author> authors = jdbcTemplate.query("SELECT * FROM authors", (ResultSet rs, int rowNum) -> {
+//            Author author = new Author();
+//            author.setFirstName(rs.getString("first_name"));
+//            return author;
+//        });
+//        Comparator<Author> authorComparator = Comparator.comparing(Author::getFirstName);
+//        Collections.sort(authors, authorComparator);
+//
+//        Map<Character, List<Author>> sortedAuthors = new HashMap<>();
+//        List<Character> firstLetters = authors.stream().map(c -> c.getFirstName().toCharArray()[0]).distinct().collect(Collectors.toList());
+//        for (Character character : firstLetters) {
+//            List<Author> authorsByLetters = authors.stream()
+//                    .filter(c -> c.getFirstName().startsWith(character.toString())).collect(Collectors.toList());
+//
+//            sortedAuthors.put(character, authorsByLetters);
+//        }
+//        return sortedAuthors;
+//    }
+
+    public Map<String, List<Author>> getAuthorsMap() {
         List<Author> authors = jdbcTemplate.query("SELECT * FROM authors", (ResultSet rs, int rowNum) -> {
             Author author = new Author();
-            author.setAuthorName(rs.getString("authorName"));
+            author.setId(rs.getInt("id"));
+            author.setFirstName(rs.getString("first_name"));
+            author.setLastName(rs.getString("last_name"));
             return author;
         });
-        Comparator<Author> authorComparator = Comparator.comparing(Author::getAuthorName);
-        Collections.sort(authors, authorComparator);
-
-        Map<Character, List<Author>> sortedAuthors = new HashMap<>();
-        List<Character> firstLetters = authors.stream().map(c -> c.getAuthorName().toCharArray()[0]).distinct().collect(Collectors.toList());
-        for (Character character : firstLetters) {
-            List<Author> authorsByLetters = authors.stream()
-                    .filter(c -> c.getAuthorName().startsWith(character.toString())).collect(Collectors.toList());
-
-            sortedAuthors.put(character, authorsByLetters);
-        }
-        return sortedAuthors;
+        return authors.stream().collect(Collectors.groupingBy((Author a) -> a.getLastName().substring(0, 1)));
     }
 }

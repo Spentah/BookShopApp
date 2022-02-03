@@ -10,8 +10,14 @@ price VARCHAR(250) DEFAULT NULL
 
 DROP TABLE IF EXISTS authors;
 
-CREATE TABLE authors(
-author_id INT AUTO_INCREMENT PRIMARY KEY,
-authorName VARCHAR(250) NOT NULL,
-FOREIGN KEY (author_id) REFERENCES books(id)
+--CREATE TABLE authors(
+--author_id INT AUTO_INCREMENT PRIMARY KEY,
+--authorName VARCHAR(250) NOT NULL,
+--FOREIGN KEY (author_id) REFERENCES books(id)
+--);
+
+create table authors (
+	id INT,
+	first_name VARCHAR(50),
+	last_name VARCHAR(50)
 );
